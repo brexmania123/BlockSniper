@@ -10,6 +10,7 @@ use BlockHorizons\BlockSniper\revert\RevertStorer;
 use BlockHorizons\BlockSniper\sessions\owners\ISessionOwner;
 use BlockHorizons\BlockSniper\sessions\owners\PlayerSessionOwner;
 use BlockHorizons\BlockSniper\sessions\owners\ServerSessionOwner;
+use pocketmine\math\Vector3;
 use pocketmine\utils\TextFormat;
 
 abstract class Session {
@@ -24,6 +25,11 @@ abstract class Session {
 	protected $revertStorer = null;
 	/** @var CloneStorer */
 	protected $cloneStorer = null;
+
+	/** @var Vector3|null */
+	protected $firstSelectionPoint = null;
+	/** @var Vector3|null */
+	protected $secondSelectionPoint = null;
 
 	public function __construct(ISessionOwner $sessionOwner, Loader $loader) {
 		$this->sessionOwner = $sessionOwner;
@@ -73,5 +79,33 @@ abstract class Session {
 	 */
 	public function getCloneStorer(): CloneStorer {
 		return $this->cloneStorer;
+	}
+
+	/**
+	 * @return Vector3
+	 */
+	public function getFirstSelectionPoint(): ?Vector3 {
+		return $this->firstSelectionPoint;
+	}
+
+	/**
+	 * @return Vector3
+	 */
+	public function getSecondSelectionPoint(): ?Vector3 {
+		return $this->secondSelectionPoint;
+	}
+
+	/**
+	 * @param Vector3 $point
+	 */
+	public function setFirstSelectionPoint(Vector3 $point): void {
+		$this->firstSelectionPoint = $point;
+	}
+
+	/**
+	 * @param Vector3 $point
+	 */
+	public function setSecondSelectionPoint(Vector3 $point): void {
+		$this->secondSelectionPoint = $point;
 	}
 }

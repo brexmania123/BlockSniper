@@ -111,6 +111,7 @@ class Translation {
 	const UI_CONFIGURATION_MENU_DROP_PLANTS = "ui.configuration-menu.drop-plants";
 	const UI_CONFIGURATION_MENU_AUTO_GUI = "ui.configuration-menu.auto-gui";
 	const UI_CONFIGURATION_MENU_MYPLOT_SUPPORT = "ui.configuration-menu.myplot-support";
+	const UI_CONFIGURATION_MENU_SELECTION_ITEM = "ui.configuration-menu.selection-item";
 	const UI_CONFIGURATION_MENU_AUTO_RELOAD = "ui.configuration-menu.auto-reload";
 	const LOG_LANGUAGE_AUTO_SELECTED = "log.language.auto-selected";
 	const LOG_LANGUAGE_USAGE = "log.language.usage";

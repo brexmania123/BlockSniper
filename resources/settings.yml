@@ -2,7 +2,7 @@
 # Configuration for BlockSniper: A WorldEdit plugin for PocketMine.
 
 # Internal Property: Do not change.
-Configuration-Version: "2.5.0"
+Configuration-Version: "3.0.0"
 
 # Whether to auto-update configuration when a new version is found.
 Auto-Configuration-Update: true
@@ -13,6 +13,9 @@ Message-Language: ""
 
 # Item ID of the item that is used to brush. (Golden carrot by default)
 Brush-Item: 396
+
+# Item ID of the item that is used to select points. (Glowstone dust by default)
+Selection-Item: 348
 
 # Maximum size for shapes/types and cloning.
 Maximum-Size: 30

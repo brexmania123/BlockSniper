@@ -145,6 +145,7 @@
       "drop-plants": "Drop plant items destroyed/blown away by the LeafBlower type",
       "auto-gui": "Automatically open the GUI when switching hotbar slot to one containing the brush item",
       "myplot-support": "Whether to turn on MyPlot support or not",
+      "selection-item": "Item ID of the item that is used to select points.",
       "auto-reload": "Turning this toggle will automatically reload the configuration when closing this window"
     }
   },

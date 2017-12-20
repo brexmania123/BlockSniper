@@ -87,6 +87,14 @@ class ConfigurationMenuWindow extends Window {
 					"default" => $s->hasMyPlotSupport()
 				],
 				[
+					"type" => "slider",
+					"text" => Translation::get(Translation::UI_CONFIGURATION_MENU_SELECTION_ITEM),
+					"min" => 0,
+					"step" => 1,
+					"max" => 511,
+					"default" => $s->getSelectionItem()
+				],
+				[
 					"type" => "toggle",
 					"text" => Translation::get(Translation::UI_CONFIGURATION_MENU_AUTO_RELOAD),
 					"default" => false
@@ -103,7 +111,7 @@ class ConfigurationMenuWindow extends Window {
 			}
 			$this->getLoader()->getSettings()->set($key, $value);
 		}
-		if($data[11] === true) {
+		if($data[12] === true) {
 			$this->loader->reload();
 		}
 		$windowHandler = new WindowHandler();

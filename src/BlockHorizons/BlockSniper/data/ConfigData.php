@@ -22,6 +22,7 @@ class ConfigData {
 	const OPTION_DROP_LEAFBLOWER_PLANTS = 8;
 	const OPTION_OPEN_GUI_AUTOMATICALLY = 9;
 	const OPTION_MY_PLOT_SUPPORT = 10;
+	const OPTION_SELECTION_ITEM = 11;
 
 	/** @var array */
 	private $settings = [];
@@ -40,7 +41,8 @@ class ConfigData {
 		"Save-Brush-Properties" => 7,
 		"Drop-Leafblower-Plants" => 8,
 		"Open-Gui-Automatically" => 9,
-		"MyPlot-Support" => 10
+		"MyPlot-Support" => 10,
+		"Selection-Item" => 11
 	];
 
 	public function __construct(Loader $loader) {
@@ -63,7 +65,8 @@ class ConfigData {
 			7 => $cfg["Save-Brush-Properties"] ?? true,
 			8 => $cfg["Drop-Leafblower-Plants"] ?? true,
 			9 => $cfg["Open-Gui-Automatically"] ?? true,
-			10 => $cfg["MyPlot-Support"] ?? false
+			10 => $cfg["MyPlot-Support"] ?? false,
+			11 => $cfg["Selection-Item"] ?? 348
 		];
 		if($cfg["Configuration-Version"] !== Loader::CONFIGURATION_VERSION) {
 			$autoUpdate = $cfg["Auto-Configuration-Update"];
@@ -184,6 +187,13 @@ class ConfigData {
 	 */
 	public function hasMyPlotSupport(): bool {
 		return (bool) $this->settings[self::OPTION_MY_PLOT_SUPPORT];
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSelectionItem(): int {
+		return (int) $this->settings[self::OPTION_SELECTION_ITEM];
 	}
 
 	public function save(): void {

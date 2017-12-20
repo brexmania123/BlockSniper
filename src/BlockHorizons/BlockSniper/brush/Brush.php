@@ -22,6 +22,8 @@ use pocketmine\Server;
 class Brush implements \JsonSerializable {
 
 	/** @var int */
+	public $mode = BrushMode::MODE_BRUSH;
+	/** @var int */
 	public $resetSize = 0;
 	/** @var string */
 	private $player = "";
@@ -59,6 +61,20 @@ class Brush implements \JsonSerializable {
 	 */
 	public function getPlayerName(): string {
 		return $this->player;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getMode(): int {
+		return $this->mode;
+	}
+
+	/**
+	 * @param int $mode
+	 */
+	public function setMode(int $mode): void {
+		$this->mode = $mode;
 	}
 
 	/**
@@ -225,6 +241,7 @@ class Brush implements \JsonSerializable {
 	 */
 	public function jsonSerialize(): array {
 		return [
+			$this->mode,
 			$this->size,
 			$this->shape,
 			$this->type,

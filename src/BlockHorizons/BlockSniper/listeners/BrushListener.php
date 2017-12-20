@@ -7,12 +7,14 @@ namespace BlockHorizons\BlockSniper\listeners;
 use BlockHorizons\BlockSniper\Loader;
 use BlockHorizons\BlockSniper\sessions\SessionManager;
 use BlockHorizons\BlockSniper\ui\WindowHandler;
+use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\math\Vector2;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
+use pocketmine\utils\TextFormat;
 
 class BrushListener implements Listener {
 
@@ -35,6 +37,39 @@ class BrushListener implements Listener {
 				$brush = ($session = SessionManager::getPlayerSession($player))->getBrush();
 				$brush->execute($session, $this->getPlotPoints($player));
 				$event->setCancelled();
+				return true;
+			}
+		}
+
+		if($player->getInventory()->getItemInHand()->getId() === $this->getLoader()->getSettings()->getSelectionItem()) {
+			if($player->hasPermission("blocksniper.command.brush")) {
+				$session = SessionManager::getPlayerSession($player);
+				$b = $event->getBlock();
+				$session->setFirstSelectionPoint($b);
+
+				$player->sendMessage(TextFormat::YELLOW . "1: " . TextFormat::BOLD . "(" . TextFormat::AQUA . $b->x . ", " . $b->y . ", " . $b->z . TextFormat::YELLOW . ")");
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param BlockBreakEvent $event
+	 *
+	 * @return bool
+	 */
+	public function selectPoint(BlockBreakEvent $event): bool {
+		$player = $event->getPlayer();
+		if($player->getInventory()->getItemInHand()->getId() === $this->getLoader()->getSettings()->getSelectionItem()) {
+			if($player->hasPermission("blocksniper.command.brush")) {
+				$session = SessionManager::getPlayerSession($player);
+				$b = $event->getBlock();
+				$session->setSecondSelectionPoint($b);
+
+				$player->sendMessage(TextFormat::YELLOW . "2: " . TextFormat::BOLD . "(" . TextFormat::AQUA . $b->x . ", " . $b->y . ", " . $b->z . TextFormat::YELLOW . ")");
+				return true;
 			}
 		}
 		return false;
