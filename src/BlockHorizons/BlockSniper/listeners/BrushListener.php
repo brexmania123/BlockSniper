@@ -37,6 +37,7 @@ class BrushListener implements Listener {
 				$brush = ($session = SessionManager::getPlayerSession($player))->getBrush();
 				$brush->execute($session, $this->getPlotPoints($player));
 				$event->setCancelled();
+
 				return true;
 			}
 		}
@@ -51,6 +52,8 @@ class BrushListener implements Listener {
 				$session->setFirstSelectionPoint($b);
 
 				$player->sendMessage(TextFormat::YELLOW . "1: " . TextFormat::BOLD . "(" . TextFormat::AQUA . $b->x . ", " . $b->y . ", " . $b->z . TextFormat::YELLOW . ")");
+				$event->setCancelled();
+
 				return true;
 			}
 		}
@@ -68,13 +71,20 @@ class BrushListener implements Listener {
 		if($player->getInventory()->getItemInHand()->getId() === $this->getLoader()->getSettings()->getSelectionItem()) {
 			if($player->hasPermission("blocksniper.command.brush")) {
 				$session = SessionManager::getPlayerSession($player);
+				if($session === null) {
+					return false;
+				}
+
 				$b = $event->getBlock();
 				$session->setSecondSelectionPoint($b);
 
 				$player->sendMessage(TextFormat::YELLOW . "2: " . TextFormat::BOLD . "(" . TextFormat::AQUA . $b->x . ", " . $b->y . ", " . $b->z . TextFormat::YELLOW . ")");
+				$event->setCancelled();
+
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -94,20 +104,24 @@ class BrushListener implements Listener {
 		if($player->hasPermission("blocksniper-myplot-bypass") || !$this->getLoader()->isMyPlotAvailable()) {
 			return [];
 		}
+
 		$plotPoints = [];
 		$settings = $this->getLoader()->getMyPlot()->getLevelSettings($player->getLevel()->getName());
 		if($settings === null) {
 			return [[new Vector2(), new Vector2()]];
 		}
+
 		$plotSize = $settings->plotSize;
 		foreach($this->getLoader()->getMyPlot()->getPlotsOfPlayer($player->getName(), $player->getLevel()->getName()) as $plot) {
 			$minVec = new Vector2($plot->X, $plot->Z);
 			$maxVec = new Vector2($plot->X + $plotSize, $plot->Z + $plotSize);
 			$plotPoints[] = [$minVec, $maxVec];
 		}
+
 		if(empty($plotPoints)) {
 			return [[new Vector2(), new Vector2()]];
 		}
+
 		return $plotPoints;
 	}
 
@@ -121,13 +135,16 @@ class BrushListener implements Listener {
 		if($event->getItem()->getId() === $this->getLoader()->getSettings()->getBrushItem()) {
 			if($player->hasPermission("blocksniper.command.brush")) {
 				$windowHandler = new WindowHandler();
+
 				$packet = new ModalFormRequestPacket();
 				$packet->formId = $windowHandler->getWindowIdFor(WindowHandler::WINDOW_BRUSH_MENU);
 				$packet->formData = $windowHandler->getWindowJson(WindowHandler::WINDOW_BRUSH_MENU, $this->getLoader(), $player);
 				$player->dataPacket($packet);
+
 				return true;
 			}
 		}
+		
 		return false;
 	}
 }
