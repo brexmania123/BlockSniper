@@ -6,6 +6,7 @@ namespace BlockHorizons\BlockSniper\brush;
 
 use BlockHorizons\BlockSniper\brush\async\tasks\BrushTask;
 use BlockHorizons\BlockSniper\brush\registration\ShapeRegistration;
+use BlockHorizons\BlockSniper\sessions\SessionManager;
 use pocketmine\block\Block;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
@@ -38,11 +39,27 @@ abstract class BaseShape {
 	/** @var string */
 	protected $playerName = "";
 
-	public function __construct(Player $player, Level $level, Position $center, bool $hollow) {
+	/** @var null|Vector3 */
+	protected $firstPoint = null;
+	/** @var null|Vector3 */
+	protected $secondPoint = null;
+	/** @var bool */
+	protected $selected = false;
+
+	public function __construct(Player $player, Level $level, Position $center, bool $hollow, bool $selected) {
 		$this->playerName = $player->getName();
 		$this->level = $level->getId();
 		$this->center = [$center->x, $center->y, $center->z, $center->level->getId()];
 		$this->hollow = $hollow;
+
+		if($selected) {
+			$this->selected = true;
+			$session = SessionManager::getPlayerSession($player);
+			if($session !== null) {
+				$this->firstPoint = $session->getFirstSelectionPoint();
+				$this->secondPoint = $session->getSecondSelectionPoint();
+			}
+		}
 	}
 
 	/**
@@ -145,13 +162,26 @@ abstract class BaseShape {
 	 *
 	 * @return array
 	 */
-	protected function calculateBoundaryBlocks(int $targetX, int $targetY, int $targetZ, int $width, int $height): array {
-		$minX = $targetX - $width;
-		$minZ = $targetZ - $width;
-		$minY = $targetY - $height;
-		$maxX = $targetX + $width;
-		$maxZ = $targetZ + $width;
-		$maxY = $targetY + $height;
+	protected function calculateBoundaryBlocks(int &$targetX, int &$targetY, int &$targetZ, int $width, int $height): array {
+		if($this->selected) {
+			$minX = min($this->firstPoint->x, $this->secondPoint->x);
+			$minZ = min($this->firstPoint->z, $this->secondPoint->z);
+			$minY = min($this->firstPoint->y, $this->secondPoint->y);
+			$maxX = max($this->firstPoint->x, $this->secondPoint->x);
+			$maxZ = max($this->firstPoint->z, $this->secondPoint->z);
+			$maxY = max($this->firstPoint->y, $this->secondPoint->y);
+
+			$targetX = $minX + ($maxX - $minX) / 2;
+			$targetY = $minY + ($maxY - $minY) / 2;
+			$targetZ = $minZ + ($maxZ - $minZ) / 2;
+		} else {
+			$minX = $targetX - $width;
+			$minZ = $targetZ - $width;
+			$minY = $targetY - $height;
+			$maxX = $targetX + $width;
+			$maxZ = $targetZ + $width;
+			$maxY = $targetY + $height;
+		}
 
 		return [$minX, $minY, $minZ, $maxX, $maxY, $maxZ];
 	}

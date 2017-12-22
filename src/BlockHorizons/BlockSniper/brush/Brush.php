@@ -263,7 +263,11 @@ class Brush implements \JsonSerializable {
 	 * @return bool
 	 */
 	public function execute(Session $session, array $plotPoints = []): bool {
-		$shape = $this->getShape();
+		$selected = false;
+		if($this->getMode() === BrushMode::MODE_SELECTION && $session->hasPointsSelected()) {
+			$selected = true;
+		}
+		$shape = $this->getShape(false, 0, $selected);
 		$type = $this->getType();
 		if($session instanceof PlayerSession) {
 			$player = $session->getSessionOwner()->getPlayer();
@@ -297,12 +301,12 @@ class Brush implements \JsonSerializable {
 	 *
 	 * @return BaseShape
 	 */
-	public function getShape($cloneShape = false, int $yOffset = 0): BaseShape {
+	public function getShape(bool $cloneShape = false, int $yOffset = 0, bool $selected = false): BaseShape {
 		$shapeName = ShapeRegistration::getShape($this->shape);
 		$vector3 = Server::getInstance()->getPlayer($this->player)->getTargetBlock(100)->add(0, $yOffset);
 
 		$location = new Position($vector3->x, $vector3->y, $vector3->z, Server::getInstance()->getPlayer($this->player)->getLevel());
-		$shape = new $shapeName(Server::getInstance()->getPlayer($this->player), Server::getInstance()->getPlayer($this->player)->getLevel(), $this->size, $location, $this->hollow, $cloneShape);
+		$shape = new $shapeName(Server::getInstance()->getPlayer($this->player), Server::getInstance()->getPlayer($this->player)->getLevel(), $this->size, $location, $this->hollow, $selected, $cloneShape);
 
 		return $shape;
 	}

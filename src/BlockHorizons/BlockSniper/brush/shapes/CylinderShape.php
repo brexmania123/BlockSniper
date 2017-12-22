@@ -18,8 +18,8 @@ class CylinderShape extends BaseShape {
 	/** @var bool */
 	private $trueCircle = false;
 
-	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $cloneShape = false) {
-		parent::__construct($player, $level, $center, $hollow);
+	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $selected = false, bool $cloneShape = false) {
+		parent::__construct($player, $level, $center, $hollow, $selected);
 		$this->radius = $radius;
 		$this->height = SessionManager::getPlayerSession($player)->getBrush()->getHeight();
 		if($cloneShape) {
@@ -34,18 +34,25 @@ class CylinderShape extends BaseShape {
 	 * @return array
 	 */
 	public function getBlocksInside(bool $vectorOnly = false): array {
-		$radiusSquared = ($this->radius + ($this->trueCircle ? 0 : -0.5)) ** 2 + ($this->trueCircle ? 0.5 : 0);
 		[$targetX, $targetY, $targetZ] = $this->center;
-		[$minX, $minY, $minZ, $maxX, $maxY, $maxZ] = $this->calculateBoundaryBlocks($targetX, $targetY, $targetZ, $this->radius, $this->height);
+		[$minX, $minY, $minZ, $maxX, $maxY, $maxZ] = $this->calculateBoundaryBlocks($targetX, $targetY, $targetZ, $this->radius, $this->radius);
+		$radiusX = ($maxX - $minX) / 2;
+		$radiusZ = ($maxZ - $minZ) / 2;
+		$radius = ($radiusX + $radiusZ) / 2;
+
+		$xFactor = ($radiusZ / $radiusX) ** 0.9;
+		$zFactor = ($radiusX / $radiusZ) ** 0.9;
+
+		$radiusSquared = ($radius - ($this->trueCircle ? 0 : 0.5)) ** 2 + ($this->trueCircle ? 0.5 : 0);
 
 		$blocksInside = [];
 
 		for($x = $minX; $x <= $maxX; $x++) {
 			for($z = $minZ; $z <= $maxZ; $z++) {
 				for($y = $minY; $y <= $maxY; $y++) {
-					if(($targetX - $x) ** 2 + ($targetZ - $z) ** 2 <= $radiusSquared) {
+					if((($targetX - $x) ** 2) * $xFactor + (($targetZ - $z) ** 2) * $zFactor <= $radiusSquared) {
 						if($this->hollow === true) {
-							if($y !== $maxY && $y !== $minY && (($targetX - $x) ** 2 + ($targetZ - $z) ** 2) < $radiusSquared - 3 - $this->radius / 0.5) {
+							if($y !== $maxY && $y !== $minY && (($targetX - $x) ** 2) * $xFactor + (($targetZ - $z) ** 2) * $zFactor < $radiusSquared - 3 - $this->radius / 0.5) {
 								continue;
 							}
 						}

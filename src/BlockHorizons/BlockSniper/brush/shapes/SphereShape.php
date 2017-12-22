@@ -18,8 +18,8 @@ class SphereShape extends BaseShape {
 	/** @var bool */
 	private $trueSphere = false;
 
-	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $cloneShape = false) {
-		parent::__construct($player, $level, $center, $hollow);
+	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $selected = false, bool $cloneShape = false) {
+		parent::__construct($player, $level, $center, $hollow, $selected);
 		$this->radius = $radius;
 		if($cloneShape) {
 			$this->center[1] += $this->radius;
@@ -33,27 +33,30 @@ class SphereShape extends BaseShape {
 	 * @return array
 	 */
 	public function getBlocksInside(bool $vectorOnly = false): array {
-		$radiusSquared = ($this->radius + ($this->trueSphere ? 0 : -0.5)) ** 2 + ($this->trueSphere ? 0.5 : 0);
 		[$targetX, $targetY, $targetZ] = $this->center;
+		[$minX, $minY, $minZ, $maxX, $maxY, $maxZ] = $this->calculateBoundaryBlocks($targetX, $targetY, $targetZ, $this->radius, $this->radius);
+		$radiusX = ($maxX - $minX) / 2;
+		$radiusZ = ($maxZ - $minZ) / 2;
+		$radiusY = ($maxY - $minY) / 2;
+		$radius = ($radiusX + $radiusZ) / 2;
 
-		$minX = $targetX - $this->radius;
-		$minZ = $targetZ - $this->radius;
-		$minY = $targetY - $this->radius;
-		$maxX = $targetX + $this->radius;
-		$maxZ = $targetZ + $this->radius;
-		$maxY = $targetY + $this->radius;
+		$yFactor = ($radius / $radiusY) ** 2;
+		$xFactor = ($radiusZ / $radiusX) ** 0.9;
+		$zFactor = ($radiusX / $radiusZ) ** 0.9;
+
+		$radiusSquared = ($radius - ($this->trueSphere ? 0 : 0.5)) ** 2 + ($this->trueSphere ? 0.5 : 0);
 
 		$blocksInside = [];
 
 		for($x = $maxX; $x >= $minX; $x--) {
-			$xs = ($targetX - $x) * ($targetX - $x);
+			$xs = ($targetX - $x) * ($targetX - $x) * $xFactor;
 			for($y = $maxY; $y >= $minY; $y--) {
-				$ys = ($targetY - $y) * ($targetY - $y);
+				$ys = ($targetY - $y) * ($targetY - $y) * $yFactor;
 				for($z = $maxZ; $z >= $minZ; $z--) {
-					$zs = ($targetZ - $z) * ($targetZ - $z);
+					$zs = ($targetZ - $z) * ($targetZ - $z) * $zFactor;
 					if($xs + $ys + $zs < $radiusSquared) {
 						if($this->hollow === true) {
-							if($y !== $maxY && $y !== $minY && ($xs + $ys + $zs) < $radiusSquared - 3 - $this->radius / 0.5) {
+							if($y !== $maxY && $y !== $minY && ($xs + $ys + $zs) < $radiusSquared - 3 - $radius / 0.5) {
 								continue;
 							}
 						}
@@ -79,7 +82,7 @@ class SphereShape extends BaseShape {
 		if($this->hollow) {
 			$blockCount = 4 * M_PI * $this->radius;
 		} else {
-			$blockCount = 4 / 3 * M_PI * $this->radius ** 3;
+			$blockCount = 4 / 3 * M_PI * ($this->radius ** 3);
 		}
 
 		return (int) ceil($blockCount);

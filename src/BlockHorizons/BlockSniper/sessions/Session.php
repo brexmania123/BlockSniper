@@ -82,6 +82,13 @@ abstract class Session {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function hasPointsSelected(): bool {
+		return $this->firstSelectionPoint !== null && $this->secondSelectionPoint !== null;
+	}
+
+	/**
 	 * @return Vector3
 	 */
 	public function getFirstSelectionPoint(): ?Vector3 {
