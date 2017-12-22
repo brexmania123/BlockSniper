@@ -6,7 +6,8 @@
       "no-permission": "Je hebt geen permissie om dit commando uit te voeren."
     },
     "brush": {
-      "description": "Opent de GUI van BlockSniper."
+      "description": "Opent de GUI van BlockSniper.",
+      "mode": "Verf modus gezet naar: "
     },
     "blocksniper": {
       "description": "Geeft informatie over BlockSniper, of herlaadt de plugin.",

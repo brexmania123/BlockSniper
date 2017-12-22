@@ -45,6 +45,8 @@ abstract class BaseShape {
 	protected $secondPoint = null;
 	/** @var bool */
 	protected $selected = false;
+	/** @var bool */
+	protected $async = false;
 
 	public function __construct(Player $player, Level $level, Position $center, bool $hollow, bool $selected) {
 		$this->playerName = $player->getName();
@@ -58,6 +60,14 @@ abstract class BaseShape {
 			if($session !== null) {
 				$this->firstPoint = $session->getFirstSelectionPoint();
 				$this->secondPoint = $session->getSecondSelectionPoint();
+
+				[$x, $y, $z] = [0, 0, 0];
+				[$minX, $minY, $minZ, $maxX, $maxY, $maxZ] = $this->calculateBoundaryBlocks($x, $y, $z, 0, 0);
+				[$length, $width, $height] = [$maxX - $minX, $maxY - $minY, $maxZ - $minZ];
+
+				if($length * $width * $height > 20000) {
+					$this->setAsynchronous();
+				}
 			}
 		}
 	}
@@ -77,6 +87,20 @@ abstract class BaseShape {
 	 * @return int
 	 */
 	public abstract function getApproximateProcessedBlocks(): int;
+
+	/**
+	 * @return bool
+	 */
+	public function isAsynchronous(): bool {
+		return $this->async;
+	}
+
+	/**
+	 * @param bool $value
+	 */
+	public function setAsynchronous(bool $value = true) {
+		$this->async = $value;
+	}
 
 	/**
 	 * @param Server $server

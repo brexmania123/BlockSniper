@@ -267,6 +267,7 @@ class Brush implements \JsonSerializable {
 		if($this->getMode() === BrushMode::MODE_SELECTION && $session->hasPointsSelected()) {
 			$selected = true;
 		}
+
 		$shape = $this->getShape(false, 0, $selected);
 		$type = $this->getType();
 		if($session instanceof PlayerSession) {
@@ -285,7 +286,7 @@ class Brush implements \JsonSerializable {
 			return false;
 		}
 
-		if($type->canBeExecutedAsynchronously() && $this->getSize() >= $loader->getSettings()->getMinimumAsynchronousSize()) {
+		if($type->canBeExecutedAsynchronously() && ($this->getSize() >= $loader->getSettings()->getMinimumAsynchronousSize() || $shape->isAsynchronous())) {
 			$shape->editAsynchronously($type, $plotPoints);
 		} else {
 			$type->setBlocksInside($shape->getBlocksInside());

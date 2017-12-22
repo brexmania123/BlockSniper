@@ -6,7 +6,8 @@
       "no-permission": "이 명령을 실행할 수있는 권한이 없습니다."
     },
     "brush": {
-      "description": "BlockSniper 용 GUI를 엽니 다."
+      "description": "BlockSniper 용 GUI를 엽니 다.",
+      "mode": "Successfully set your brush mode to: "
     },
     "blocksniper": {
       "description": "BlockSniper에 대한 정보를 표시하거나 플러그인을 다시로드합니다.",

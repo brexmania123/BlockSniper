@@ -9,12 +9,13 @@ class Translation {
 	/**
 	 * These constants are AUTOMATICALLY GENERATED.
 	 *
-	 * Do NOT edit by hand.
+	 * Do not waste your time editing these by hand.
 	 */
 	const COMMANDS_COMMON_WARNING_PREFIX = "commands.common.warning-prefix";
 	const COMMANDS_COMMON_INVALID_SENDER = "commands.common.invalid-sender";
 	const COMMANDS_COMMON_NO_PERMISSION = "commands.common.no-permission";
 	const COMMANDS_BRUSH_DESCRIPTION = "commands.brush.description";
+	const COMMANDS_BRUSH_MODE = "commands.brush.mode";
 	const COMMANDS_BLOCKSNIPER_DESCRIPTION = "commands.blocksniper.description";
 	const COMMANDS_BLOCKSNIPER_INFO = "commands.blocksniper.info";
 	const COMMANDS_BLOCKSNIPER_VERSION = "commands.blocksniper.version";
@@ -143,6 +144,7 @@ class Translation {
 	const BRUSH_TYPE_SNOWCONE = "brush.type.snowcone";
 	const BRUSH_TYPE_TOPLAYER = "brush.type.toplayer";
 	const BRUSH_TYPE_TREE = "brush.type.tree";
+
 	/** @var string[] */
 	private static $translations = [];
 	/** @var array */

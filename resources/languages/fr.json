@@ -6,7 +6,8 @@
       "no-permission": "Vous n'avez pas la permission pour executer cette commande"
     },
     "brush": {
-      "description": "Ouverture de l'interface graphique pour BlockSniper."
+      "description": "Ouverture de l'interface graphique pour BlockSniper.",
+      "mode": "Successfully set your brush mode to: "
     },
     "blocksniper": {
       "description": "Affiche des informations sur BlockSniper, ou recharge le plugin.",

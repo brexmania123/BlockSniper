@@ -12,6 +12,7 @@ use BlockHorizons\BlockSniper\ui\WindowHandler;
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 use pocketmine\Player;
+use pocketmine\utils\TextFormat;
 
 class BrushCommand extends BaseCommand {
 
@@ -40,15 +41,20 @@ class BrushCommand extends BaseCommand {
 		}
 
 		$mode = BrushMode::MODE_BRUSH;
-		switch(strtolower($args[1])) {
-			case "selection":
-			case "select":
-			case "new":
-			case "points":
-			case "point":
-				$mode = BrushMode::MODE_SELECTION;
+		if(!isset($args[1])) {
+			$mode = BrushMode::MODE_BRUSH;
+		} else {
+			switch(strtolower($args[1])) {
+				case "selection":
+				case "select":
+				case "new":
+				case "points":
+				case "point":
+					$mode = BrushMode::MODE_SELECTION;
+			}
 		}
 
+		$sender->sendMessage(TextFormat::GREEN . Translation::get(Translation::COMMANDS_BRUSH_MODE) . TextFormat::AQUA . $mode === 0 ? "Brush" : "Selection");
 		SessionManager::getPlayerSession($sender)->getBrush()->setMode($mode);
 
 		return true;
