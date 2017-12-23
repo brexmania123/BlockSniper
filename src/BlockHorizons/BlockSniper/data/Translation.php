@@ -30,6 +30,7 @@ class Translation {
 	const COMMANDS_UNDO_NO_UNDO = "commands.undo.no-undo";
 	const COMMANDS_UNDO_SUCCESS = "commands.undo.success";
 	const COMMANDS_CLONE_DESCRIPTION = "commands.clone.description";
+	const COMMANDS_CLONE_NO_POINTS = "commands.clone.no-points";
 	const COMMANDS_CLONE_COPY_SUCCESS = "commands.clone.copy.success";
 	const COMMANDS_CLONE_TEMPLATE_MISSING_NAME = "commands.clone.template.missing-name";
 	const COMMANDS_CLONE_TEMPLATE_SUCCESS = "commands.clone.template.success";
@@ -144,6 +145,10 @@ class Translation {
 	const BRUSH_TYPE_SNOWCONE = "brush.type.snowcone";
 	const BRUSH_TYPE_TOPLAYER = "brush.type.toplayer";
 	const BRUSH_TYPE_TREE = "brush.type.tree";
+	const BRUSH_TYPE_REGENERATE = "brush.type.regenerate";
+	const BRUSH_TYPE_FREEZE = "brush.type.freeze";
+	const BRUSH_TYPE_WARM = "brush.type.warm";
+	const BRUSH_TYPE_HEAT = "brush.type.heat";
 
 	/** @var string[] */
 	private static $translations = [];

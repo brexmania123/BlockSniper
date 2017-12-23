@@ -18,13 +18,10 @@ class CylinderShape extends BaseShape {
 	/** @var bool */
 	private $trueCircle = false;
 
-	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $selected = false, bool $cloneShape = false) {
+	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $selected = false) {
 		parent::__construct($player, $level, $center, $hollow, $selected);
 		$this->radius = $radius;
 		$this->height = SessionManager::getPlayerSession($player)->getBrush()->getHeight();
-		if($cloneShape) {
-			$this->center[1] += $this->height;
-		}
 		$this->trueCircle = SessionManager::getPlayerSession($player)->getBrush()->getPerfect();
 	}
 

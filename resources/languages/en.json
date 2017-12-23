@@ -30,8 +30,9 @@
     },
     "clone": {
       "description": "Clones an area using the specified format.",
+      "no-points": "Please select both a first and a second selection point with the selection item.",
       "copy": {
-        "success": "Successfully copied the location looked at."
+        "success": "Successfully copied the selected location."
       },
       "template": {
         "missing-name": "No valid name has been given for the template.",

@@ -30,6 +30,7 @@
     },
     "clone": {
       "description": "지정된 형식을 사용하여 영역을 복제합니다.",
+      "no-points": "Please select both a first and a second selection point with the selection item.",
       "copy": {
         "success": "보았던 위치를 복사했습니다."
       },

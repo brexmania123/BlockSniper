@@ -30,8 +30,9 @@
     },
     "clone": {
       "description": "Kopieert een zone met de aangegeven type.",
+      "no-points": "Selecteer alstublieft eerst twee punten met het selectievoorwerp.",
       "copy": {
-        "success": "Kopiëren van de zone waar je naar kijkt geslaagd."
+        "success": "Kopiëren van de geselecteerde zone geslaagd."
       },
       "template": {
         "missing-name": "Er is geen geldige naam gegeven voor de template.",

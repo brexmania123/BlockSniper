@@ -39,6 +39,9 @@ abstract class BaseShape {
 	/** @var string */
 	protected $playerName = "";
 
+	/** @var array */
+	public $sizes = [];
+
 	/** @var null|Vector3 */
 	protected $firstPoint = null;
 	/** @var null|Vector3 */
@@ -64,6 +67,14 @@ abstract class BaseShape {
 				[$x, $y, $z] = [0, 0, 0];
 				[$minX, $minY, $minZ, $maxX, $maxY, $maxZ] = $this->calculateBoundaryBlocks($x, $y, $z, 0, 0);
 				[$length, $width, $height] = [$maxX - $minX, $maxY - $minY, $maxZ - $minZ];
+
+				$this->sizes = [
+					"l" => $length,
+					"w" => $width,
+					"h" => $height
+				];
+
+				$this->center = [$x, $y, $z, $this->level];
 
 				if($length * $width * $height > 20000) {
 					$this->setAsynchronous();

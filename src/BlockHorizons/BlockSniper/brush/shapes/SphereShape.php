@@ -18,12 +18,9 @@ class SphereShape extends BaseShape {
 	/** @var bool */
 	private $trueSphere = false;
 
-	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $selected = false, bool $cloneShape = false) {
+	public function __construct(Player $player, Level $level, int $radius, Position $center, bool $hollow = false, bool $selected = false) {
 		parent::__construct($player, $level, $center, $hollow, $selected);
 		$this->radius = $radius;
-		if($cloneShape) {
-			$this->center[1] += $this->radius;
-		}
 		$this->trueSphere = SessionManager::getPlayerSession($player)->getBrush()->getPerfect();
 	}
 

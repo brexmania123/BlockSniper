@@ -30,6 +30,7 @@
     },
     "clone": {
       "description": "Clone une zone en utilisant le format spécifié.",
+      "no-points": "Please select both a first and a second selection point with the selection item.",
       "copy": {
         "success": "Copie avec succès de l'emplacement regardé."
       },

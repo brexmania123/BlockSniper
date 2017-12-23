@@ -49,8 +49,6 @@ class Brush implements \JsonSerializable {
 	private $biome = "plains";
 	/** @var string */
 	private $tree = "oak";
-	/** @var int */
-	private $yOffset = 0;
 
 	public function __construct(string $player) {
 		$this->player = $player;
@@ -75,20 +73,6 @@ class Brush implements \JsonSerializable {
 	 */
 	public function setMode(int $mode): void {
 		$this->mode = $mode;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getYOffset(): int {
-		return $this->yOffset;
-	}
-
-	/**
-	 * @param int $offset
-	 */
-	public function setYOffset(int $offset): void {
-		$this->yOffset = $offset;
 	}
 
 	/**
@@ -297,17 +281,19 @@ class Brush implements \JsonSerializable {
 	}
 
 	/**
-	 * @param bool $cloneShape
-	 * @param int  $yOffset
+	 * @param $selected bool
 	 *
 	 * @return BaseShape
 	 */
-	public function getShape(bool $cloneShape = false, int $yOffset = 0, bool $selected = false): BaseShape {
+	public function getShape(bool $selected = false): BaseShape {
 		$shapeName = ShapeRegistration::getShape($this->shape);
-		$vector3 = Server::getInstance()->getPlayer($this->player)->getTargetBlock(100)->add(0, $yOffset);
+		$vector3 = Server::getInstance()->getPlayer($this->player)->getTargetBlock(100);
+		if($vector3 === null) {
+			$vector3 = New Position();
+		}
 
-		$location = new Position($vector3->x, $vector3->y, $vector3->z, Server::getInstance()->getPlayer($this->player)->getLevel());
-		$shape = new $shapeName(Server::getInstance()->getPlayer($this->player), Server::getInstance()->getPlayer($this->player)->getLevel(), $this->size, $location, $this->hollow, $selected, $cloneShape);
+		$location = new Position($vector3->x, $vector3->y, $vector3->z, $vector3->getLevel());
+		$shape = new $shapeName(Server::getInstance()->getPlayer($this->player), $vector3->getLevel(), $this->size, $location, $this->hollow, $selected);
 
 		return $shape;
 	}

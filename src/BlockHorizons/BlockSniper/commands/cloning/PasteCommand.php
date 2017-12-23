@@ -37,23 +37,28 @@ class PasteCommand extends BaseCommand {
 			throw new InvalidBlockException("No valid block could be found when attempting to paste.");
 		}
 
+		$session = SessionManager::getPlayerSession($sender);
+		if($session === null) {
+			return false;
+		}
+
 		switch(strtolower($args[0])) {
 			default:
 			case "copy":
-				if(!SessionManager::getPlayerSession($sender)->getCloneStorer()->copyStoreExists()) {
+				if(!$session->getCloneStorer()->copyStoreExists()) {
 					$sender->sendMessage($this->getWarning() . Translation::get(Translation::COMMANDS_PASTE_COPY_NO_COPIES));
 					return false;
 				}
-				SessionManager::getPlayerSession($sender)->getCloneStorer()->pasteCopy($sender->getTargetBlock(100));
+				$session->getCloneStorer()->pasteCopy($sender->getTargetBlock(100));
 				$sender->sendMessage(TF::GREEN . Translation::get(Translation::COMMANDS_PASTE_COPY_SUCCESS));
 				break;
 
 			case "template":
-				if(!SessionManager::getPlayerSession($sender)->getCloneStorer()->templateExists($args[1])) {
+				if(!$session->getCloneStorer()->templateExists($args[1])) {
 					$sender->sendMessage($this->getWarning() . Translation::get(Translation::COMMANDS_PASTE_TEMPLATE_NONEXISTENT, [$args[1]]));
 					return false;
 				}
-				SessionManager::getPlayerSession($sender)->getCloneStorer()->pasteTemplate($args[1], $center);
+				$session->getCloneStorer()->pasteTemplate($args[1], $center);
 				$sender->sendMessage(TF::GREEN . Translation::get(Translation::COMMANDS_PASTE_TEMPLATE_SUCCESS, [$args[1]]));
 				break;
 
@@ -77,7 +82,8 @@ class PasteCommand extends BaseCommand {
 						$touchedChunks[Level::chunkHash($x >> 4, $z >> 4)] = $chunk->fastSerialize();
 					}
 				}
-				SessionManager::getPlayerSession($sender)->getCloneStorer()->pasteSchematic($file, $sender->getTargetBlock(100)->asVector3(), $touchedChunks);
+
+				$session->getCloneStorer()->pasteSchematic($file, $sender->getTargetBlock(100)->asVector3(), $touchedChunks);
 				$sender->sendMessage(TF::GREEN . Translation::get(Translation::COMMANDS_PASTE_SCHEMATIC_SUCCESS, [$args[1]]));
 				break;
 		}

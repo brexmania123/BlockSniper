@@ -30,6 +30,7 @@
     },
     "clone": {
       "description": "指定された形式を使用して領域をクローンします。",
+      "no-points": "Please select both a first and a second selection point with the selection item.",
       "copy": {
         "success": "選択範囲を正常にコピーしました。"
       },
