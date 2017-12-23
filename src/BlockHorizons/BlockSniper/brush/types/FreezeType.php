@@ -8,7 +8,7 @@ use BlockHorizons\BlockSniper\brush\BaseType;
 use pocketmine\block\Block;
 
 /*
- * Freezes the terrain, causing water to become ice, lava to become obsidian and extinguishes fire.
+ * Freezes the terrain, causing water to become ice, ice to become packed ice, lava to become obsidian and extinguishes fire.
  */
 
 class FreezeType extends BaseType {

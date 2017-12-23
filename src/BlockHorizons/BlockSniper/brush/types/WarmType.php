@@ -7,6 +7,10 @@ namespace BlockHorizons\BlockSniper\brush\types;
 use BlockHorizons\BlockSniper\brush\BaseType;
 use pocketmine\block\Block;
 
+/*
+ * Warms the surroundings, making packed ice melt to ice, ice to melt to water and snow layers to melt.
+ */
+
 class WarmType extends BaseType {
 
 	const ID = self::TYPE_WARM;

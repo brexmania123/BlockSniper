@@ -13,6 +13,10 @@ use pocketmine\block\Leaves;
 use pocketmine\block\Leaves2;
 use pocketmine\block\TallGrass;
 
+/*
+ * Heats the surroundings, evaporating water, melting all snow and ice, scorching the earth and burning plants.
+ */
+
 class HeatType extends BaseType {
 
 	const ID = self::TYPE_HEAT;
