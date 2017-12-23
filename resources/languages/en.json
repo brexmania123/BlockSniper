@@ -193,7 +193,11 @@
       "replace": "Replace",
       "snowcone": "Snowcone",
       "toplayer": "Top Layer",
-      "tree": "Tree"
+      "tree": "Tree",
+      "regenerate": "Regenerate",
+      "freeze": "Freeze",
+      "warm": "Warm",
+      "heat": "Heat"
     }
   }
 }
