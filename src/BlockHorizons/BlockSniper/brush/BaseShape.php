@@ -54,7 +54,7 @@ abstract class BaseShape {
 	public function __construct(Player $player, Level $level, Position $center, bool $hollow, bool $selected) {
 		$this->playerName = $player->getName();
 		$this->level = $level->getId();
-		$this->center = [$center->x, $center->y, $center->z, $center->level->getId()];
+		$this->center = [(int) $center->x, (int) $center->y, (int) $center->z, $center->level->getId()];
 		$this->hollow = $hollow;
 
 		if($selected) {
@@ -206,9 +206,9 @@ abstract class BaseShape {
 			$maxZ = max($this->firstPoint->z, $this->secondPoint->z);
 			$maxY = max($this->firstPoint->y, $this->secondPoint->y);
 
-			$targetX = $minX + ($maxX - $minX) / 2;
-			$targetY = $minY + ($maxY - $minY) / 2;
-			$targetZ = $minZ + ($maxZ - $minZ) / 2;
+			$targetX = (int) ($minX + ($maxX - $minX) / 2);
+			$targetY = (int) ($minY + ($maxY - $minY) / 2);
+			$targetZ = (int) ($minZ + ($maxZ - $minZ) / 2);
 		} else {
 			$minX = $targetX - $width;
 			$minZ = $targetZ - $width;
@@ -218,6 +218,6 @@ abstract class BaseShape {
 			$maxY = $targetY + $height;
 		}
 
-		return [$minX, $minY, $minZ, $maxX, $maxY, $maxZ];
+		return [(int) $minX, (int) $minY, (int) $minZ, (int) $maxX, (int) $maxY, (int) $maxZ];
 	}
 }
